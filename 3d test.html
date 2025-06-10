@@ -1,0 +1,1372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mars & Space Exploration Center</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/aos@next/dist/aos.css"/>
+    <style>
+        :root {
+            --primary-color: #ff4d4d;
+            --secondary-color: #1a1a1a;
+            --accent-color: #ff8533;
+            --text-color: #ffffff;
+            --background-dark: #0a0a0a;
+            --transition: all 0.3s ease;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Space Grotesk', sans-serif;
+            background-color: var(--background-dark);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            cursor: none;
+        }
+
+        /* Стилизация скроллбара */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--background-dark);
+            border-radius: 6px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(
+                45deg,
+                rgb(255, 0, 0),
+                rgb(255, 0, 255),
+                rgb(0, 0, 255),
+                rgb(0, 255, 255),
+                rgb(0, 255, 0),
+                rgb(255, 255, 0),
+                rgb(255, 0, 0)
+            );
+            border-radius: 6px;
+            border: 2px solid var(--background-dark);
+            background-size: 200% 200%;
+            animation: gradientAnimation 5s ease infinite;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(
+                45deg,
+                rgb(255, 0, 0),
+                rgb(255, 0, 255),
+                rgb(0, 0, 255),
+                rgb(0, 255, 255),
+                rgb(0, 255, 0),
+                rgb(255, 255, 0),
+                rgb(255, 0, 0)
+            );
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+        }
+
+        /* Анимация градиента */
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Navigation Styles */
+        nav {
+            position: fixed;
+            width: 100%;
+            padding: 20px;
+            background: rgba(10, 10, 10, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            transition: var(--transition);
+        }
+
+        .nav-scrolled {
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        nav ul {
+            display: flex;
+            justify-content: center;
+            list-style: none;
+            gap: 40px;
+        }
+
+        nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            font-size: 1.1em;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        nav a::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary-color);
+            transition: var(--transition);
+        }
+
+        nav a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+    .hero {
+    height: 100vh;
+    background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)),
+                url('http://m908305u.beget.tech/wp-content/uploads/2022/11/w1gdsltiqdk-bli3lsovclxj-iz4ir7zdw0csjvgpfo-scaled.webp') center/cover;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+
+        .hero-content {
+            max-width: 800px;
+            padding: 0 20px;
+        }
+
+        .hero h1 {
+            font-size: 4.5em;
+            margin-bottom: 20px;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            margin-bottom: 30px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            background: var(--primary-color);
+            color: var(--text-color);
+            text-decoration: none;
+            border-radius: 5px;
+            transition: var(--transition);
+            font-weight: 500;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+        }
+
+        /* Section Styles */
+        .section {
+            padding: 100px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            font-size: 2.5em;
+            margin-bottom: 50px;
+            text-align: center;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: var(--primary-color);
+        }
+
+        /* Grid Layout */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 50px;
+        }
+
+        .card {
+            background: var(--secondary-color);
+            padding: 30px;
+            border-radius: 15px;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, var(--primary-color), var(--accent-color));
+            opacity: 0;
+            transition: var(--transition);
+            z-index: 1;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+        }
+
+        .card:hover::before {
+            opacity: 0.1;
+        }
+
+        .card h3 {
+            font-size: 1.5em;
+            margin-bottom: 15px;
+            color: var(--primary-color);
+        }
+
+/* Добавьте в ваши стили */
+.section {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section#about {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('https://co14.nevseoboi.com.ua/192/19135/1417265393-6037885-www.nevseoboi.com.ua.jpg') center/cover no-repeat;
+    position: relative;
+    color: var(--text-color);
+    padding: 100px 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+}
+
+/* Делаем карточки более прозрачными для лучшей читаемости */
+.section#about .card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+.section#exploration {
+    background: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)),
+                url('https://nztcdn.com/files/4580de11-7c82-4cbe-9d7b-5b19e96be39f.webp') center/cover no-repeat;
+    position: relative;
+    color: var(--text-color);
+    padding: 100px 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+}
+
+/* Делаем карточки более прозрачными для лучшей читаемости */
+.section#exploration .card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+
+        /* Gallery Section */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: var(--transition);
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        /* Timeline Section */
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 100px auto;
+            padding: 20px;
+        }
+
+        .timeline::after {
+            content: '';
+            position: absolute;
+            width: 2px;
+            background: var(--primary-color);
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            margin-left: -1px;
+        }
+
+        .timeline-item {
+            padding: 10px 40px;
+            position: relative;
+            width: 50%;
+        }
+
+        .timeline-item::after {
+            content: '';
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            top: 15px;
+            right: -10px;
+        }
+
+        .timeline-item:nth-child(even) {
+            left: 50%;
+        }
+
+        .timeline-item:nth-child(even)::after {
+            left: -10px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--secondary-color);
+            padding: 50px 20px;
+            text-align: center;
+        }
+
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5em;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 3em;
+            }
+
+            nav ul {
+                gap: 20px;
+            }
+
+            .timeline::after {
+                left: 31px;
+            }
+
+            .timeline-item {
+                width: 100%;
+                padding-left: 70px;
+                padding-right: 25px;
+            }
+
+            .timeline-item:nth-child(even) {
+                left: 0;
+            }
+        }
+
+        /* RGB Скроллбар с переливающимся эффектом */
+ ::-webkit-scrollbar {
+    width: 14px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0a;
+    border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(
+        to bottom,
+        #ff0000,
+        #ff8000,
+        #ffff00,
+        #00ff00,
+        #00ffff,
+        #0000ff,
+        #8000ff,
+        #ff00ff,
+        #ff0000
+    );
+    border-radius: 8px;
+    background-size: 100% 600%;
+    animation: rgb-flow 8s linear infinite;
+    border: 2px solid #0a0a0a;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    animation: rgb-flow 4s linear infinite;
+}
+
+@keyframes rgb-flow {
+    0% {
+        background-position: 0% 0%;
+    }
+    100% {
+        background-position: 0% 300%;
+    }
+}
+
+/* Firefox стили (базовая поддержка) */
+* {
+    scrollbar-width: thin;
+    scrollbar-color: #ff0000 #0a0a0a;
+}
+
+        #custom-cursor {
+    position: fixed;
+    pointer-events: none;
+    z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+}
+
+/* Для интерактивных элементов оставляем стандартный курсор */
+a, button, input, textarea, [role="button"] {
+    cursor: none;
+}
+
+        @keyframes walk { 0%, 100% { transform: translate(-50%, -50%); } 25% { transform: translate(-50%, -55%); } 75% { transform: translate(-50%, -45%); } }
+
+        #custom-cursor img { filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.5)); }
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-5px); } }
+#custom-cursor img { animation: float 2s ease-in-out infinite; }
+
+        /* Добавьте в ваши стили */
+.contact-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.form-group label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: var(--text-color);
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+.form-group input:focus + label,
+.form-group input:valid + label,
+.form-group textarea:focus + label,
+.form-group textarea:valid + label {
+    transform: translateY(-25px);
+    font-size: 14px;
+    color: var(--primary-color);
+}
+
+.submit-btn {
+    padding: 15px 30px;
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.submit-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 77, 77, 0.3);
+}
+
+/* Добавьте в ваши стили */
+.map-container {
+    width: 100%;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+#mars-map-canvas {
+    width: 100%;
+    height: 500px;
+    background: url('https://planetary.s3.amazonaws.com/web/assets/pictures/20140305_mars_viking_mosaic.jpg') center/cover;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+}
+
+.map-controls {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.map-btn {
+    padding: 10px 20px;
+    background: var(--secondary-color);
+    color: var(--text-color);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.map-btn:hover {
+    background: var(--primary-color);
+    transform: translateY(-2px);
+}
+
+        /* Стили для 3D секции */
+#mars-container {
+    width: 100%;
+    height: 500px;
+    background: var(--secondary-color);
+    border-radius: 15px;
+    overflow: hidden;
+    position: relative;
+}
+
+        /* Стили для формы (добавьте в существующий CSS) */
+.contact-container {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.feedback-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    background: var(--secondary-color);
+    padding: 30px;
+    border-radius: 15px;
+}
+
+.form-group {
+    position: relative;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--text-color);
+    font-size: 16px;
+}
+
+.form-group textarea {
+    min-height: 150px;
+    resize: vertical;
+}
+
+.form-group label {
+    position: absolute;
+    left: 15px;
+    top: 15px;
+    color: var(--text-color);
+    transition: var(--transition);
+    pointer-events: none;
+}
+
+.form-group input:focus + label,
+.form-group input:valid + label,
+.form-group textarea:focus + label,
+.form-group textarea:valid + label {
+    transform: translateY(-25px);
+    font-size: 14px;
+    color: var(--primary-color);
+}
+
+        /* Добавьте в существующие стили */
+.section {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+}
+
+.section.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.section#exploration {
+    position: relative;
+    background: url('https://zastavok.net/main/cosmos/170431953184.jpg') center/cover no-repeat;
+    padding: 100px 20px;
+    margin: 20px auto;
+}
+
+.section#exploration::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.7);
+}
+
+.section#exploration > * {
+    position: relative;
+    z-index: 1;
+}
+
+.section#exploration .card {
+    background: rgba(26, 26, 26, 0.85);
+    backdrop-filter: blur(5px);
+}
+
+
+        .mars-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            height: auto;
+            min-height: 500px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #mars-scene {
+            width: 100%;
+            height: 500px;
+            background: var(--secondary-color);
+            border-radius: 15px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .mars-controls {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .control-btn {
+            width: 50px;
+            height: 50px;
+            background: var(--primary-color);
+            border: none;
+            border-radius: 50%;
+            color: var(--text-color);
+            font-size: 20px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .control-btn:hover {
+            background: var(--accent-color);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <button id="back-to-top" class="back-to-top-btn" style="display:none">
+        <i class="fas fa-arrow-up"></i>
+    </button>
+<nav id="mainNav">
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#about">About Mars</a></li>
+        <li><a href="#exploration">Exploration</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#timeline">Timeline</a></li>
+        <li><a href="#contact">Contact</a></li>
+    </ul>
+</nav>
+
+<section class="hero" id="home">
+    <div class="hero-content" data-aos="fade-up">
+        <h1>Exploring The Red Planet</h1>
+        <p>Embark on a journey through Mars: From ancient mysteries to future colonies</p>
+        <a href="#about" class="cta-button">Begin Explorer</a>
+    </div>
+</section>
+
+<section class="section" id="about">
+    <h2 class="section-title" data-aos="fade-up">About Mars</h2>
+    <div class="grid">
+        <div class="card" data-aos="fade-up" data-aos-delay="100">
+            <h3>Geography</h3>
+            <p>Mars features some of the most impressive geological features in our solar system, including Olympus
+                Mons, the largest volcano, and Valles Marineris, the largest canyon.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="200">
+            <h3>Atmosphere</h3>
+            <p>The Martian atmosphere is primarily composed of carbon dioxide (95.3%), nitrogen (2.7%), and argon
+                (1.6%). The atmospheric pressure is less than 1% of Earth's.</p>
+        </div>
+        <div class="card" data-aos="fade-up" data-aos-delay="300">
+            <h3>Water on Mars</h3>
+            <p>Evidence suggests that liquid water once flowed on Mars's surface. Today, water exists primarily as ice
+                in the polar ice caps and beneath the surface.</p>
+        </div>
+    </div>
+</section>
+
+<section class="section" id="exploration">
+    <h2 class="section-title" data-aos="fade-up">Mars Exploration</h2>
+    <div class="grid">
+        <div class="card" data-aos="fade-right">
+            <h3>Current Missions</h3>
+            <p>Several active missions are currently exploring Mars, including NASA's Perseverance rover and the
+                Ingenuity helicopter.</p>
+        </div>
+        <div class="card" data-aos="fade-up">
+            <h3>Future Plans</h3>
+            <p>Upcoming missions aim to return Martian samples to Earth and establish human presence on the Red
+                Planet.</p>
+        </div>
+        <div class="card" data-aos="fade-left">
+            <h3>Scientific Discoveries</h3>
+            <p>Recent discoveries include evidence of ancient microbial life and complex organic molecules in Martian
+                soil.</p>
+        </div>
+    </div>
+</section>
+
+
+<section class="section" id="gallery">
+    <h2 class="section-title" data-aos="fade-up">Mars Gallery</h2>
+    <div class="gallery">
+        <div class="gallery-item" data-aos="zoom-in">
+            <img src="https://science.nasa.gov/wp-content/uploads/2024/03/pia04304-mars.jpg?resize=2000,1896" alt="Mars Surface">
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="100">
+            <img src="https://assets.science.nasa.gov/dynamicimage/assets/science/missions/msr/MAV%20Launch.png?w=4602&h=2582&fit=clip&crop=faces%2Cfocalpoint"
+                 alt="Martian Landscape">
+        </div>
+        <div class="gallery-item" data-aos="zoom-in" data-aos-delay="200">
+            <img src="https://assets.science.nasa.gov/dynamicimage/assets/science/psd/mars/downloadable_items/3/2/32322_mars-curiosity-rover-msl-horizon-sky-self-portrait-PIA19808-full.jpg?w=4841&h=2949&fit=clip&crop=faces%2Cfocalpoint" alt="Mars Rover">
+        </div>
+    </div>
+</section>
+
+<section class="section" id="mars-game">
+    <h2 class="section-title" data-aos="fade-up">Mars Explorer Game</h2>
+    <div class="mars-container">
+        <div id="mars-scene"></div>
+        <div class="mars-controls">
+            <button id="move-forward" class="control-btn"><i class="fas fa-arrow-up"></i></button>
+            <button id="move-left" class="control-btn"><i class="fas fa-arrow-left"></i></button>
+            <button id="move-right" class="control-btn"><i class="fas fa-arrow-right"></i></button>
+            <button id="move-back" class="control-btn"><i class="fas fa-arrow-down"></i></button>
+        </div>
+    </div>
+</section>
+<section class="timeline" id="timeline">
+    <h2 class="section-title" data-aos="fade-up">Mission Timeline</h2>
+    <div class="timeline-item" data-aos="fade-right">
+        <h3>1965</h3>
+        <p>Mariner 4 совершает первый успешный пролет около Марса</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-left">
+        <h3>1976</h3>
+        <p>Viking 1 и 2 совершают первую успешную посадку на Марс</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-right">
+        <h3>2004</h3>
+        <p>Марсоходы Spirit и Opportunity начинают исследование поверхности</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-left">
+        <h3>2012</h3>
+        <p>Марсоход Curiosity совершает посадку в кратере Гейла</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-right">
+        <h3>2018</h3>
+        <p>InSight начинает исследование внутреннего строения Марса</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-left">
+        <h3>2021</h3>
+        <p>Марсоход Perseverance и вертолет Ingenuity начинают свою миссию</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-right">
+        <h3>2024</h3>
+        <p>Планируемая миссия по возврату образцов марсианского грунта</p>
+    </div>
+    <div class="timeline-item" data-aos="fade-left">
+        <h3>2030</h3>
+        <p>Планируемая первая пилотируемая миссия на Марс</p>
+    </div>
+</section>
+
+
+
+<div id="custom-cursor" style="display: none;">
+    <img src="astronaut.png" alt="astronaut cursor" width="32" height="32">
+</div>
+
+
+
+
+<section class="section" id="contact-form">
+    <h2 class="section-title" data-aos="fade-up">Связаться с нами</h2>
+    <div class="contact-container">
+        <form id="feedback-form" class="feedback-form">
+            <div class="form-group">
+                <input type="text" id="name" required>
+                <label for="name">Ваше имя</label>
+            </div>
+            <div class="form-group">
+                <input type="email" id="email" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="form-group">
+                <textarea id="message" required></textarea>
+                <label for="message">Ваше сообщение</label>
+            </div>
+            <button type="submit" class="cta-button">Отправить</button>
+        </form>
+    </div>
+</section>
+
+<footer id="contact">
+    <div class="social-links">
+        <a href="#"><i class="fab fa-twitter"></i></a>
+        <a href="#"><i class="fab fa-facebook"></i></a>
+        <a href="#"><i class="fab fa-instagram"></i></a>
+        <a href="#"><i class="fab fa-youtube"></i></a>
+    </div>
+    <p>&copy; 2025 Mars Exploration Center Of Mirsaid.</p>
+</footer>
+
+<script src="https://unpkg.com/aos@next/dist/aos.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+<script>
+    AOS.init({
+        duration: 1000,
+        once: true,
+        offset: 200
+    });
+
+    // Navigation scroll effect
+    window.addEventListener('scroll', function() {
+        const nav = document.getElementById('mainNav');
+        if (window.scrollY > 100) {
+            nav.classList.add('nav-scrolled');
+        } else {
+            nav.classList.remove('nav-scrolled');
+        }
+    });
+
+    // Smooth scroll for navigation links
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.querySelector(this.getAttribute('href')).scrollIntoView({
+                behavior: 'smooth'
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+    const cursor = document.getElementById('custom-cursor');
+    let lastX = 0;
+    let lastY = 0;
+    let isFlipped = false;
+
+    // Показываем курсор
+    cursor.style.display = 'block';
+
+    document.addEventListener('mousemove', function(e) {
+        // Определяем направление движения
+        if (e.clientX < lastX && !isFlipped) {
+            cursor.style.transform = 'translate(-50%, -50%) scaleX(-1)';
+            isFlipped = true;
+        } else if (e.clientX > lastX && isFlipped) {
+            cursor.style.transform = 'translate(-50%, -50%)';
+            isFlipped = false;
+        }
+
+        // Обновляем позицию курсора
+        cursor.style.left = e.clientX + 'px';
+        cursor.style.top = e.clientY + 'px';
+
+        lastX = e.clientX;
+        lastY = e.clientY;
+    });
+
+    // Скрываем курсор, когда мышь покидает окно
+    document.addEventListener('mouseout', function(e) {
+        if (e.relatedTarget === null) {
+            cursor.style.display = 'none';
+        }
+    });
+
+    // Показываем курсор, когда мышь возвращается
+    document.addEventListener('mouseover', function(e) {
+        cursor.style.display = 'block';
+    });
+});
+
+    // Добавьте эту функцию в ваш JavaScript код
+function animateWalk(cursor) {
+    let isWalking = false;
+    let walkTimeout;
+
+    return function(e) {
+        // Отменяем предыдущий таймаут
+        clearTimeout(walkTimeout);
+
+        // Если не в движении, добавляем класс анимации
+        if (!isWalking) {
+            cursor.classList.add('walking');
+            isWalking = true;
+        }
+
+        // Устанавливаем таймаут для остановки
+        walkTimeout = setTimeout(() => {
+            cursor.classList.remove('walking');
+            isWalking = false;
+        }, 100);
+    }
+}
+
+// 1. Параллакс (добавьте в конец файла, сохраняя ваши текущие изображения)
+window.addEventListener('scroll', function() {
+    const parallaxSections = document.querySelectorAll('.hero, #about, #exploration');
+    parallaxSections.forEach(section => {
+        const scrolled = window.pageYOffset;
+        const rate = scrolled * 0.5;
+        const currentBg = window.getComputedStyle(section).backgroundImage;
+        section.style.backgroundImage = currentBg;
+        section.style.backgroundPosition = `center ${rate}px`;
+    });
+});
+
+
+    // Добавьте в ваш JavaScript
+function checkVisible() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const isVisible = (rect.top <= window.innerHeight * 0.75);
+        if (isVisible) {
+            section.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('scroll', checkVisible);
+window.addEventListener('load', checkVisible);
+
+// Добавьте в ваш JavaScript
+const mapLocations = {
+    'olympus-mons': { x: 30, y: 40 },
+    'valles-marineris': { x: 50, y: 60 },
+    'hellas-planitia': { x: 70, y: 80 }
+};
+
+document.querySelectorAll('.map-btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        const location = mapLocations[this.dataset.location];
+        const map = document.getElementById('mars-map-canvas');
+        map.style.backgroundPosition = `${location.x}% ${location.y}%`;
+    });
+});
+
+    // Добавьте в конец существующего JavaScript
+// Кнопка "Вверх"
+const backToTopBtn = document.getElementById('back-to-top');
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopBtn.classList.add('visible');
+    } else {
+        backToTopBtn.classList.remove('visible');
+    }
+});
+
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+    });
+});
+
+    // Добавьте в конец существующего JavaScript
+function checkVisible() {
+    const sections = document.querySelectorAll('.section');
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const isVisible = (rect.top <= window.innerHeight * 0.75);
+        if (isVisible) {
+            section.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('scroll', checkVisible);
+window.addEventListener('load', checkVisible);
+
+// Global variables for Three.js
+let scene, camera, renderer, mars, controls;
+const textureLoader = new THREE.TextureLoader();
+
+// Инициализация 3D сцены
+function initMars() {
+    // Создаем сцену
+    scene = new THREE.Scene();
+
+    // Настраиваем камеру
+    camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.z = 5;
+
+    // Создаем рендерер
+    renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(document.getElementById('mars-scene').offsetWidth,
+                    document.getElementById('mars-scene').offsetHeight);
+    document.getElementById('mars-scene').appendChild(renderer.domElement);
+
+    // Создаем геометрию и текстуру Марса
+    const geometry = new THREE.SphereGeometry(2, 64, 64);
+    const textureLoader = new THREE.TextureLoader();
+
+    // Загружаем текстуры
+    const marsTexture = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/mars.jpg');
+    const marsBumpMap = textureLoader.load('https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/mars_bump.jpg');
+
+    // Создаем материал
+    const material = new THREE.MeshStandardMaterial({
+        map: marsTexture,
+        bumpMap: marsBumpMap,
+        bumpScale: 0.05
+    });
+
+    // Создаем сферу Марса
+    mars = new THREE.Mesh(geometry, material);
+    scene.add(mars);
+
+    // Добавляем освещение
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+    scene.add(ambientLight);
+
+    const pointLight = new THREE.PointLight(0xffffff, 1);
+    pointLight.position.set(10, 10, 10);
+    scene.add(pointLight);
+
+    // Запускаем анимацию
+    animate();
+
+    // Добавляем обработчики событий для кнопок
+    document.getElementById('rotate-left').addEventListener('click', () => {
+        mars.rotation.y += 0.5;
+    });
+
+    document.getElementById('rotate-right').addEventListener('click', () => {
+        mars.rotation.y -= 0.5;
+    });
+
+    document.getElementById('zoom-in').addEventListener('click', () => {
+        if (camera.position.z > 3) camera.position.z -= 0.5;
+    });
+
+    document.getElementById('zoom-out').addEventListener('click', () => {
+        if (camera.position.z < 10) camera.position.z += 0.5;
+    });
+
+    // Добавляем обработчик изменения размера окна
+    window.addEventListener('resize', onWindowResize, false);
+}
+
+// Функция анимации
+function animate() {
+    requestAnimationFrame(animate);
+    mars.rotation.y += 0.002;
+    renderer.render(scene, camera);
+}
+
+// Функция изменения размера окна
+function onWindowResize() {
+    camera.aspect = document.getElementById('mars-scene').offsetWidth /
+                    document.getElementById('mars-scene').offsetHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(document.getElementById('mars-scene').offsetWidth,
+                    document.getElementById('mars-scene').offsetHeight);
+}
+
+// Добавляем обработчик загрузки страницы
+document.addEventListener('DOMContentLoaded', initMars);
+
+// Добавляем интерактивность при наведении мыши
+let isDragging = false;
+let previousMousePosition = {
+    x: 0,
+    y: 0
+};
+
+document.getElementById('mars-scene').addEventListener('mousedown', (e) => {
+    isDragging = true;
+});
+
+document.getElementById('mars-scene').addEventListener('mousemove', (e) => {
+    if (isDragging) {
+        const deltaMove = {
+            x: e.offsetX - previousMousePosition.x,
+            y: e.offsetY - previousMousePosition.y
+        };
+
+        mars.rotation.y += deltaMove.x * 0.005;
+        mars.rotation.x += deltaMove.y * 0.005;
+    }
+
+    previousMousePosition = {
+        x: e.offsetX,
+        y: e.offsetY
+    };
+});
+
+document.addEventListener('mouseup', () => {
+    isDragging = false;
+});
+
+    // Добавьте эти функции в конец JavaScript файла
+
+// Функция для добавления звезд на фон
+function addStars() {
+    const geometry = new THREE.SphereGeometry(0.1, 24, 24);
+    const material = new THREE.MeshBasicMaterial({ color: 0xffffff });
+
+    for(let i = 0; i < 200; i++) {
+        const star = new THREE.Mesh(geometry, material);
+        const [x, y, z] = Array(3).fill().map(() => THREE.MathUtils.randFloatSpread(100));
+        star.position.set(x, y, z);
+        scene.add(star);
+    }
+}
+
+// Вызовите эту функцию в initMars() после создания сцены
+addStars();
+
+
+</script>
+
+<script>
+    // Initialize Three.js scene
+    const init = () => {
+        // Scene setup
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth * 0.8, window.innerHeight * 0.6);
+
+        const container = document.getElementById('mars-container');
+        if (container) {
+            container.appendChild(renderer.domElement);
+        }
+
+        // Mars creation
+        const geometry = new THREE.SphereGeometry(5, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+
+        textureLoader.load(
+            'https://www.solarsystemscope.com/textures/download/2k_mars.jpg',
+            (texture) => {
+                const material = new THREE.MeshStandardMaterial({
+                    map: texture,
+                    roughness: 0.7,
+                    metalness: 0.3
+                });
+                mars = new THREE.Mesh(geometry, material);
+                scene.add(mars);
+
+                // Lighting
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                const pointLight = new THREE.PointLight(0xffffff, 1);
+                pointLight.position.set(10, 10, 10);
+                scene.add(ambientLight);
+                scene.add(pointLight);
+
+                camera.position.z = 15;
+                animate();
+            },
+            undefined,
+            (error) => {
+                console.error('Error loading Mars texture:', error);
+            }
+        );
+    };
+
+    const animate = () => {
+        requestAnimationFrame(animate);
+        if (mars) {
+            mars.rotation.y += 0.005;
+        }
+        renderer.render(scene, camera);
+    };
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', init);
+</script>
+
+<script>
+    let scene, camera, renderer, rover;
+    let isGameActive = false;
+
+    function initGame() {
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(document.getElementById('mars-scene').offsetWidth,
+                        document.getElementById('mars-scene').offsetHeight);
+        document.getElementById('mars-scene').appendChild(renderer.domElement);
+
+        // Create Mars terrain
+        const geometry = new THREE.PlaneGeometry(50, 50, 40, 40);
+        const material = new THREE.MeshPhongMaterial({
+            color: 0xcc6600,
+            wireframe: false
+        });
+        const terrain = new THREE.Mesh(geometry, material);
+        terrain.rotation.x = -Math.PI / 2;
+        scene.add(terrain);
+
+        // Add lighting
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+        scene.add(ambientLight);
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5);
+        scene.add(directionalLight);
+
+        // Position camera
+        camera.position.set(0, 5, 10);
+        camera.lookAt(0, 0, 0);
+
+        // Create rover
+        const roverGeometry = new THREE.BoxGeometry(1, 0.5, 1.5);
+        const roverMaterial = new THREE.MeshPhongMaterial({ color: 0x888888 });
+        rover = new THREE.Mesh(roverGeometry, roverMaterial);
+        rover.position.y = 0.25;
+        scene.add(rover);
+
+        animate();
+        isGameActive = true;
+    }
+
+    function animate() {
+        if (!isGameActive) return;
+        requestAnimationFrame(animate);
+        renderer.render(scene, camera);
+    }
+
+    // Control handlers
+    document.getElementById('move-forward').addEventListener('click', () => {
+        if (isGameActive) {
+            rover.position.z -= 0.5;
+            camera.position.z -= 0.5;
+        }
+    });
+
+    document.getElementById('move-back').addEventListener('click', () => {
+        if (isGameActive) {
+            rover.position.z += 0.5;
+            camera.position.z += 0.5;
+        }
+    });
+
+    document.getElementById('move-left').addEventListener('click', () => {
+        if (isGameActive) {
+            rover.position.x -= 0.5;
+            camera.position.x -= 0.5;
+        }
+    });
+
+    document.getElementById('move-right').addEventListener('click', () => {
+        if (isGameActive) {
+            rover.position.x += 0.5;
+            camera.position.x += 0.5;
+        }
+    });
+
+    // Initialize game when section becomes visible
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting && !isGameActive) {
+                initGame();
+            }
+        });
+    });
+
+    observer.observe(document.getElementById('mars-game'));
+</script>
+
+
+</body>
+</html>
